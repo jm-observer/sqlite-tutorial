@@ -1,26 +1,30 @@
-use sea_orm::{ConnectionTrait, Database, DatabaseConnection};
+mod entities;
+pub mod db;
+mod insert_update_delete;
+mod query;
+mod datas;
+mod transaction;
+mod custom_query;
+
+
+use sea_orm::{ConnectionTrait};
+use crate::custom_query::custom_query;
+use crate::db::connect;
+
+use crate::insert_update_delete::run;
+use crate::query::run_with_db;
+use crate::transaction::run_with_transcation;
 
 #[tokio::main]
 async fn main() {
-    let db = Database::connect("sqlite://./resources/sqlite3.db")
-        .await
-        .unwrap();
+    custom_utils::logger::logger_stdout_debug();
+    let db = connect().await;
+    let _database = db.get_database_backend();
+    run(&db).await.unwrap();
+    if let Err(err) = run_with_db(&db).await {
+        panic!("{}", err);
+    }
 
-    db.execute_unprepared(r#"CREATE TABLE `cake` (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT)"#).await.unwrap();
-
-    println!("Hello, world!");
+    run_with_transcation(&db).await.unwrap();
+     custom_query(&db).await.unwrap();
 }
-
-//
-// fn is_exist_table(db: &DatabaseConnection, name: &str) -> anyhow::Result<bool> {
-//     let sql = "SELECT name FROM sqlite_master WHERE type='table' AND name=?1";
-//
-//     let a =  db.get_database_backend().build(sql);
-//
-//     let res = stmt
-//         .exists([name])
-//         .map_err(|e| Error::CheckExists(name.to_owned(), e))?;
-//
-//     Ok(res)
-// }

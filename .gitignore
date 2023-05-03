@@ -13,5 +13,5 @@ Cargo.lock
 # Added by cargo
 
 /target
-resources/sqlite3.db
+resources/sqlite.db
 .idea
