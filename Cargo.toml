@@ -1,3 +1,5 @@
+workspace = { members = ["sqlx-tutorial", "."] }
+
 [package]
 name = "sqlite-tutorial"
 version = "0.1.0"
@@ -9,7 +11,6 @@ edition = "2021"
 custom-utils = "0.10.13"
 anyhow = "1.0.70"
 tokio = { version = "1.27.0", features = ["full"]}
-sea-orm = {version = "0.11.2", features = ["sqlx-sqlite", "runtime-tokio-rustls", "macros"], default-features = false}
-sqlx = "0.6.3"
+sea-orm = {version = "0.12.2", features = ["sqlx-sqlite", "runtime-tokio-rustls", "macros"], default-features = false}
 
 
